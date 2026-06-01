@@ -1,6 +1,6 @@
 # Project Notice
 
-This repository (`multimode_orbslam3_warpper`) is a **standalone modified
+This repository (`multimode_orbslam3_wrapper`) is a **standalone modified
 copy** of [`zang09/ORB_SLAM3_ROS2`](https://github.com/zang09/ORB_SLAM3_ROS2)
 adapted for the fault-tolerant LiDAR-Visual-GNSS multimodal localization
 pipeline ([`fault-tolerant-localization-pipeline`](https://github.com/jeonseoknam/fault-tolerant-localization-pipeline)).
