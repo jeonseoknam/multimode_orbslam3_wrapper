@@ -18,6 +18,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(message_filters REQUIRED)
 find_package(Sophus REQUIRED)
@@ -39,7 +40,15 @@ add_executable(mono
   src/monocular/mono.cpp
   src/monocular/monocular-slam-node.cpp
 )
-ament_target_dependencies(mono rclcpp sensor_msgs cv_bridge ORB_SLAM3 Pangolin OpenCV)
+ament_target_dependencies(mono rclcpp sensor_msgs geometry_msgs cv_bridge message_filters ORB_SLAM3 Pangolin OpenCV)
+
+target_link_libraries(mono
+  opencv_core
+  opencv_imgproc
+  opencv_highgui
+  opencv_calib3d
+)
+
 
 add_executable(rgbd
   src/rgbd/rgbd.cpp
@@ -52,6 +61,13 @@ add_executable(stereo
   src/stereo/stereo-slam-node.cpp
 )
 ament_target_dependencies(stereo rclcpp sensor_msgs cv_bridge message_filters ORB_SLAM3 Pangolin OpenCV)
+target_link_libraries(stereo
+  opencv_core
+  opencv_imgproc
+  opencv_highgui
+  opencv_calib3d
+)
+
 
 add_executable(stereo-inertial
   src/stereo-inertial/stereo-inertial.cpp
@@ -59,11 +75,24 @@ add_executable(stereo-inertial
 )
 ament_target_dependencies(stereo-inertial rclcpp sensor_msgs cv_bridge ORB_SLAM3 Pangolin OpenCV)
 
-install(TARGETS mono rgbd stereo stereo-inertial DESTINATION lib/${PROJECT_NAME})
+
+# mono-inertial 모드 추가
+add_executable(mono-inertial
+  src/mono-inertial/mono-inertial.cpp
+  src/mono-inertial/mono-inertial-node.cpp
+)
+
+ament_target_dependencies(mono-inertial rclcpp sensor_msgs cv_bridge ORB_SLAM3 Pangolin OpenCV)
+
+install(TARGETS mono rgbd stereo stereo-inertial mono-inertial DESTINATION lib/${PROJECT_NAME})
 
 # Install launch files.
-#install(DIRECTORY launch config vocabulary
-#  DESTINATION share/${PROJECT_NAME}/)
+install(DIRECTORY
+  launch
+  config
+  vocabulary
+  DESTINATION share/${PROJECT_NAME}
+)
 
 ament_package()
 

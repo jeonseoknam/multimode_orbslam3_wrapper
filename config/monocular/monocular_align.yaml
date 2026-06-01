@@ -1,0 +1,47 @@
+# /**:
+#   ros__parameters:
+#     vocab_path: "/home/misys/orb3_wrapper_ws/src/orbslam3_ros2/vocabulary/ORBvoc.txt"
+#     settings_path: "/home/misys/orb3_wrapper_ws/src/orbslam3_ros2/config/monocular/MORAI_1280x720.yaml"
+#     visualization: true
+
+#     use_alignment: true
+#     align_scale: 16.948452561408
+#     align_R: [9.99648060e-01,  2.36301990e-02, -1.20569147e-02,
+#               1.20633388e-02, -1.29324423e-04,  9.99927227e-01,
+#               2.36269201e-02, -9.99720759e-01, -4.14338005e-04]
+#     align_t: [0.19729259,  0.36500687, -1.25596016]
+
+
+# ORB SLAM 이미지, 맵 로드하고 원점으로 돌아와서 정합한 버전
+# bag file: /home/misys/orb3_wrapper_ws/dataset/0420_fusion_no_baselink
+# /**:
+#   ros__parameters:
+#     vocab_path: "/home/misys/orb3_wrapper_ws/src/orbslam3_ros2/vocabulary/ORBvoc.txt"
+#     settings_path: "/home/misys/orb3_wrapper_ws/src/orbslam3_ros2/config/monocular/MORAI_1280x720.yaml"
+#     visualization: true
+
+#     use_alignment: false
+#     align_scale: 16.954869041411
+#     align_R: [9.99717304e-01,  2.16903398e-02, -9.73861660e-03,
+#               9.75104790e-03, -4.67433265e-04,  9.99952348e-01,
+#               2.16847541e-02, -9.99764628e-01, -6.78804666e-04]
+#     align_t: [-0.054863,    0.10303737, -1.31062913]
+
+
+
+# /orb_pose (camera_link의 pose) 기준으로 찾은 변환
+# RMSE all = 0.699m, RMSE inlier = 0.467m
+# dt=0.131s
+# 초반 2초 skip
+/**:
+  ros__parameters:
+    vocab_path: "/home/misys/orb3_wrapper_ws/src/orbslam3_ros2/vocabulary/ORBvoc.txt"
+    settings_path: "/home/misys/orb3_wrapper_ws/src/orbslam3_ros2/config/monocular/MORAI_1280x720.yaml"
+    visualization: true
+
+    use_alignment: false
+    align_scale: 16.955819746628
+    align_R: [9.99715195e-01,  2.17776191e-02, -9.76035718e-03,
+              9.77248730e-03, -4.50642862e-04,  9.99952147e-01,
+              2.17721785e-02, -9.99762738e-01, -6.63336022e-04]
+    align_t: [-0.03848624,  0.10113551, -1.30975518]

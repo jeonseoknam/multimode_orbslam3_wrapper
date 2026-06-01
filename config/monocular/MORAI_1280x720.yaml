@@ -5,36 +5,27 @@
 #--------------------------------------------------------------------------------------------
 Camera.type: "PinHole"
 
-# MORAI camera setting:
-# width  = 480
-# height = 360
-# horizontal FOV = 90 deg
-#
-# fx = width / (2 * tan(HFOV/2)) = 480 / (2 * tan(45 deg)) = 240
-# Assume square pixels in simulator:
-# fx = fy = 240
-# cx = 240
-# cy = 180
 
 # Camera calibration and distortion parameters (OpenCV)
-Camera.fx: 240.0
-Camera.fy: 240.0
-Camera.cx: 240.0
-Camera.cy: 180.0
+Camera.fx: 640.0
+Camera.fy: 640.0
+Camera.cx: 640.0
+Camera.cy: 360.0
 
-# distortion parameters
-Camera.k1: 0.0
-Camera.k2: 0.0
-Camera.p1: 0.0
-Camera.p2: 0.0
+# # distortion parameters
+Camera.k1: 0.0000
+Camera.k2: 0.0000
+Camera.p1: 0.0000
+Camera.p2: 0.0000
+
 
 # Camera resolution
-Camera.width: 480
-Camera.height: 360
+Camera.width: 1280
+Camera.height: 720
 
 # Camera frames per second
 # Set this to the actual measured image rate if possible
-Camera.fps: 29.0
+Camera.fps: 30.0
 
 # Color order of the images (0: BGR, 1: RGB. Ignored if images are grayscale)
 # MORAI bridge publishes bgr8
@@ -43,17 +34,14 @@ Camera.RGB: 0
 # Image scale, it changes the image size to be processed (<1.0: reduce, >1.0: increase)
 Camera.imageScale: 1.0
 
-# Close/Far threshold. Baseline times.
-ThDepth: 40.0
-
 # For mono mode this is not used, but kept for compatibility with example format
-Camera.bf: 0.0
+# Camera.bf: 0.0
 
 #--------------------------------------------------------------------------------------------
 # ORB Parameters
 #--------------------------------------------------------------------------------------------
 # ORB Extractor: Number of features per image
-ORBextractor.nFeatures: 2000
+ORBextractor.nFeatures: 2200
 
 # ORB Extractor: Scale factor between levels in the scale pyramid
 ORBextractor.scaleFactor: 1.2
@@ -62,8 +50,12 @@ ORBextractor.scaleFactor: 1.2
 ORBextractor.nLevels: 8
 
 # ORB Extractor: Fast threshold
-ORBextractor.iniThFAST: 10
-ORBextractor.minThFAST: 3
+# ORB Extractor: Fast threshold
+# Image is divided in a grid. At each cell FAST are extracted imposing a minimum response.
+# Firstly we impose iniThFAST. If no corners are detected we impose a lower value minThFAST
+# You can lower these values if your images have low contrast			
+ORBextractor.iniThFAST: 15
+ORBextractor.minThFAST: 5
 
 #--------------------------------------------------------------------------------------------
 # Viewer Parameters
@@ -73,8 +65,12 @@ Viewer.KeyFrameLineWidth: 1
 Viewer.GraphLineWidth: 0.9
 Viewer.PointSize: 2
 Viewer.CameraSize: 0.08
-Viewer.CameraLineWidth: 3
-Viewer.ViewpointX: 0
+Viewer.CameraLineWidth: 3.0
+Viewer.ViewpointX: 0.0
 Viewer.ViewpointY: -0.7
 Viewer.ViewpointZ: -1.8
 Viewer.ViewpointF: 500
+
+# map save, load
+System.LoadAtlasFromFile: "map/0420_mono_1280_map"
+# System.SaveAtlasToFile: "orb_map"

@@ -1,0 +1,92 @@
+%YAML:1.0
+
+#--------------------------------------------------------------------------------------------
+# Camera Parameters
+#--------------------------------------------------------------------------------------------
+Camera.type: "PinHole"
+
+# Left Camera calibration and distortion parameters (OpenCV)
+Camera.fx: 640.0
+Camera.fy: 640.0
+Camera.cx: 640.0
+Camera.cy: 360.0
+
+# distortion parameters
+Camera.k1: 0.0
+Camera.k2: 0.0
+Camera.p1: 0.0
+Camera.p2: 0.0
+
+# Right Camera calibration and distortion parameters (OpenCV)
+Camera2.fx: 640.0
+Camera2.fy: 640.0
+Camera2.cx: 640.0
+Camera2.cy: 360.0
+
+# distortion parameters
+Camera2.k1: 0.0
+Camera2.k2: 0.0
+Camera2.p1: 0.0
+Camera2.p2: 0.0
+
+# Transform from left camera to right camera
+# baseline = 0.20 m
+# In rectified stereo optical frame, right camera is +x from left camera
+Tlr: !!opencv-matrix
+  rows: 3
+  cols: 4
+  dt: f
+  data: [1.0, 0.0, 0.0, 0.20,
+         0.0, 1.0, 0.0, 0.0,
+         0.0, 0.0, 1.0, 0.0]
+
+# Camera resolution
+Camera.width: 1280
+Camera.height: 720
+
+# Camera frames per second
+Camera.fps: 30.0
+
+# Color order of the images
+# MORAI bridge publishes bgr8 raw images.
+# If wrapper converts to grayscale before TrackStereo(), this value is effectively ignored.
+# Otherwise 0 means BGR.
+Camera.RGB: 0
+
+# Image scale
+# Start with 1.0 for best stereo matching in simulation.
+# If too slow, try 0.5 later.
+Camera.imageScale: 1.0
+
+# Close/Far threshold. Baseline times.
+ThDepth: 40.0
+
+# stereo baseline times fx
+Camera.bf: 128.0
+
+#--------------------------------------------------------------------------------------------
+# ORB Parameters
+#--------------------------------------------------------------------------------------------
+ORBextractor.nFeatures: 2200
+ORBextractor.scaleFactor: 1.2
+ORBextractor.nLevels: 8
+ORBextractor.iniThFAST: 15
+ORBextractor.minThFAST: 5
+
+#--------------------------------------------------------------------------------------------
+# Viewer Parameters
+#--------------------------------------------------------------------------------------------
+Viewer.KeyFrameSize: 0.05
+Viewer.KeyFrameLineWidth: 1
+Viewer.GraphLineWidth: 0.9
+Viewer.PointSize: 2
+Viewer.CameraSize: 0.08
+Viewer.CameraLineWidth: 3
+Viewer.ViewpointX: 0
+Viewer.ViewpointY: -0.7
+Viewer.ViewpointZ: -3.5
+Viewer.ViewpointF: 500
+
+# map save, load
+# System.LoadAtlasFromFile: "map/1280_stereo_map"
+System.SaveAtlasToFile: "orb_map"
