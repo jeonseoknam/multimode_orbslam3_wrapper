@@ -12,6 +12,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/image.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
+#include "std_msgs/msg/int32.hpp"
+#include "std_msgs/msg/bool.hpp"
 
 #include <cv_bridge/cv_bridge.h>
 
@@ -26,6 +28,8 @@ class MonocularSlamNode : public rclcpp::Node
 public:
     using ImageMsg       = sensor_msgs::msg::Image;
     using PoseStampedMsg = geometry_msgs::msg::PoseStamped;
+    using Int32Msg       = std_msgs::msg::Int32;
+    using BoolMsg        = std_msgs::msg::Bool;
 
     explicit MonocularSlamNode(ORB_SLAM3::System* pSLAM);
     ~MonocularSlamNode() override;
@@ -71,6 +75,16 @@ private:
     // aligned poses
     rclcpp::Publisher<PoseStampedMsg>::SharedPtr m_pose_camera_aligned_publisher; // /orb_pose_camera_aligned
     rclcpp::Publisher<PoseStampedMsg>::SharedPtr m_pose_aligned_publisher;        // /orb_pose_aligned (base aligned)
+
+    // Tracking state, published on every frame. ORB-SLAM3 simply stops
+    // emitting poses when tracking is not OK, so downstream health
+    // monitoring could previously only infer a tracking loss from the pose
+    // timeout. Publishing the state directly makes the camera gate use the
+    // tracker's own verdict.
+    //   -1 SYSTEM_NOT_READY, 0 NO_IMAGES_YET, 1 NOT_INITIALIZED,
+    //    2 OK, 3 RECENTLY_LOST, 4 LOST, 5 OK_KLT
+    rclcpp::Publisher<Int32Msg>::SharedPtr m_tracking_state_publisher;  // /orb_tracking_state
+    rclcpp::Publisher<BoolMsg>::SharedPtr  m_tracking_ok_publisher;     // /orb_tracking_ok
 
     std::atomic<bool> m_is_shutting_down{false};
     bool m_has_shutdown = false;

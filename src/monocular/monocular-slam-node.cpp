@@ -63,6 +63,11 @@ MonocularSlamNode::MonocularSlamNode(ORB_SLAM3::System* pSLAM)
     m_pose_aligned_publisher =
         this->create_publisher<PoseStampedMsg>("orb_pose_aligned", 10);
 
+    m_tracking_state_publisher =
+        this->create_publisher<Int32Msg>("orb_tracking_state", 10);
+    m_tracking_ok_publisher =
+        this->create_publisher<BoolMsg>("orb_tracking_ok", 10);
+
     RCLCPP_INFO(this->get_logger(), "MonocularSlamNode started");
     RCLCPP_INFO(this->get_logger(), "use_alignment: %s", m_use_alignment ? "true" : "false");
     RCLCPP_INFO(this->get_logger(), "align_scale  : %.12f", m_align_scale);
@@ -239,7 +244,20 @@ void MonocularSlamNode::GrabImage(const ImageMsg::SharedPtr msg)
         Sophus::SE3f Tcw =
             m_SLAM->TrackMonocular(gray, Utility::StampToSec(msg->header.stamp));
 
-        if (m_SLAM->GetTrackingState() != 2)
+        const int tracking_state = m_SLAM->GetTrackingState();
+
+        // Publish on every frame, including the frames that produce no pose,
+        // so a tracking loss is visible immediately instead of only through
+        // the absence of poses.
+        Int32Msg state_msg;
+        state_msg.data = tracking_state;
+        m_tracking_state_publisher->publish(state_msg);
+
+        BoolMsg ok_msg;
+        ok_msg.data = (tracking_state == 2);
+        m_tracking_ok_publisher->publish(ok_msg);
+
+        if (tracking_state != 2)
             return;
 
         Sophus::SE3f Twc = Tcw.inverse();
