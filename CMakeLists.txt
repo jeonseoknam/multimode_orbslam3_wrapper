@@ -93,6 +93,9 @@ install(DIRECTORY
   config
   vocabulary
   DESTINATION share/${PROJECT_NAME}
+  # The vocabulary ships compressed; only the extracted ORBvoc.txt is needed
+  # at runtime, so keep the 42 MB archive out of the install tree.
+  PATTERN "*.tar.gz" EXCLUDE
 )
 
 ament_package()

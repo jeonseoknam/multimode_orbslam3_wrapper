@@ -1,17 +1,27 @@
 # ORB vocabulary
 
-`ORBvoc.txt` (~139 MB) is **not tracked in git** — it ships with ORB-SLAM3.
-`CMakeLists.txt` installs this whole directory, so the directory itself must
-exist for the build to succeed; this file keeps it in the repository.
-
-Copy the vocabulary here once, after installing ORB-SLAM3:
+`ORBvoc.txt.tar.gz` is tracked here (42 MB compressed, 139 MB extracted).
+**Extract it once before building:**
 
 ```bash
-cd ~/ORB_SLAM3/Vocabulary
-tar -xf ORBvoc.txt.tar.gz            # only needed the first time
-cp ORBvoc.txt <workspace>/src/orbslam3_ros2/vocabulary/
+cd <workspace>/src/orbslam3_ros2/vocabulary
+tar -xzf ORBvoc.txt.tar.gz
 ```
 
-`launch/monocular.launch.py` resolves it as
-`share/orbslam3/vocabulary/ORBvoc.txt`, so a rebuild is required after
-copying if you did not build with `--symlink-install`.
+That is all — `ORBvoc.txt` lands next to the archive, which is where the build
+expects it. The extracted file stays untracked (`.gitignore`), so it will not
+be committed back.
+
+`CMakeLists.txt` installs this directory to `share/orbslam3/vocabulary/`, and
+`launch/monocular.launch.py` resolves the vocabulary as
+`share/orbslam3/vocabulary/ORBvoc.txt`. If you did not build with
+`--symlink-install`, rebuild after extracting. The archive itself is excluded
+from the install tree.
+
+## Where this file comes from
+
+It is the vocabulary distributed with
+[ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3) (`Vocabulary/ORBvoc.txt.tar.gz`),
+byte-identical to upstream, and it carries ORB-SLAM3's GPLv3 license. It is
+mirrored here only so that a clone of this repository builds without a separate
+download.
