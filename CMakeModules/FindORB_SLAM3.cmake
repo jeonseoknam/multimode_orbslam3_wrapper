@@ -3,9 +3,23 @@
 # Once done this will define
 # You should ensure your ORB_SLAM3 can run correctly
 #
-# To help the search ORB_SLAM3_ROOT_DIR environment variable as the path to ORB_SLAM3 root folder
-#  e.g. `set( ORB_SLAM3_ROOT_DIR=~/ORB_SLAM3) `
-set(ORB_SLAM3_ROOT_DIR "/home/misys/ORB_SLAM3")
+# Where ORB-SLAM3 lives. The README tells you to build it at ~/ORB_SLAM3, so
+# that is the default -- resolved from $HOME rather than a literal path, which
+# used to be hardcoded to one developer's home and broke the build for everyone
+# else even when they followed the README exactly.
+#
+# Installed somewhere else? Either export the environment variable
+#   export ORB_SLAM3_ROOT_DIR=/opt/ORB_SLAM3
+# or pass it to colcon
+#   colcon build --cmake-args -DORB_SLAM3_ROOT_DIR=/opt/ORB_SLAM3
+if(NOT ORB_SLAM3_ROOT_DIR)
+  if(DEFINED ENV{ORB_SLAM3_ROOT_DIR})
+    set(ORB_SLAM3_ROOT_DIR "$ENV{ORB_SLAM3_ROOT_DIR}")
+  else()
+    set(ORB_SLAM3_ROOT_DIR "$ENV{HOME}/ORB_SLAM3")
+  endif()
+endif()
+message(STATUS "ORB_SLAM3_ROOT_DIR: ${ORB_SLAM3_ROOT_DIR}")
 
 # message(${ORB_SLAM3_ROOT_DIR})
 # message(${ORB_SLAM3_ROOT_DIR}/include)S
