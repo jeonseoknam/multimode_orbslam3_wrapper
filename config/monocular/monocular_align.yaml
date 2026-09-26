@@ -35,8 +35,14 @@
 # 초반 2초 skip
 /**:
   ros__parameters:
-    vocab_path: "/home/misys/orb3_wrapper_ws/src/orbslam3_ros2/vocabulary/ORBvoc.txt"
-    settings_path: "/home/misys/orb3_wrapper_ws/src/orbslam3_ros2/config/monocular/MORAI_1280x720.yaml"
+    # These two are overridden by monocular.launch.py, which resolves them from
+    # this package's share directory. They used to point at another workspace,
+    # so the node quietly ran that copy's settings -- with LoadAtlasFromFile on
+    # and SaveAtlasToFile off, which made mapping start from a loaded map and
+    # save nothing. Kept here only so the file is valid standalone; edit the
+    # launch arguments (vocab_path / settings_path) instead.
+    vocab_path: "vocabulary/ORBvoc.txt"
+    settings_path: "config/monocular/MORAI_1280x720.yaml"
     visualization: true
 
     use_alignment: false
